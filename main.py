@@ -497,7 +497,7 @@ TEXTS = {
         "ad": (
         "Реклама размещается почти везде, цены варьируются в зависимости от предмета рекламы и способа продвижения.\n\n"
         "По поводу рекламы в @vertuu_accounts и @vertuu_crypto — пишите лично мне, @vrt484\n\n"
-        "По поводу рекламы в @small_accounts — пишите @sa_seller или @smaller_san\n"
+        "По поводу рекламы в @small_accounts — пишите @sa_seller или @smaller_sa\n"
         "По поводу рекламы в @vertuu_rent — пишите @orenda_admin\n\n"
         "В целом всё логично — если хотите разместить рекламу в каком-то канале, просто напишите администратору этого  канала"
         "уточните цену и договоритесь."
@@ -529,30 +529,30 @@ TEXTS = {
             "<b>My Channel-Projects</b>\n\n"
             "1. Right now, the easiest way to find me is on the @vertuu_crypto channel, which is most relevant due to Telegram gifts and the general topic of earning money. I post there about 20 times a day.\n\n"
             "2. @vertuu_accounts – also a main channel where I often share my thoughts, but its main purpose is selling my personal PUBG Mobile accounts with a guarantee against recovery, usually a lifetime one, which makes me unique here.\n\n"
-            "3. @n1_uc_shop – for everyone who wants to buy UC / popularity / supercars / X-suits / house votes, etc., profitably and safely. Really cheap. Fast and high-quality. And most importantly, it's safe + you support me financially while saving money yourself.\n\n"
-            "4. @vertuu_rent – THE CHEAPEST, really the cheapest rental of luxury, rare, stacked PUBG accounts. I only rent out my own, so the prices are kept favorable since there's no need to pay extra to account owners. For a ridiculous 100 UAH, you can rent an account worth 100,000 for a day🙂\n\n"
-            "5. Not long ago, I created a new but very functional shop – @n1_tele_shop. There you can buy Telegram Stars, Telegram Premium, TON cryptocurrency (very relevant now) cheaply for UAH. You can also order a search for NFTs, sell your gifts, etc. In short, everything is very cool.\n\n"
-            "6. @small_accounts – selling accounts up to $400 from my admins. All are safe and come with a guarantee against recovery. You can also sell your account in that price range to the admins, provided it's safe and profitable for resale.\n\n"
-            "7. @vertuu_tiktok – buying/selling TikTok accounts. You can list yours for sale / sell it to an admin or buy an account at a great price. Really great!\n\n"
-            "8. @ua_pubgm_store – my first channel, where you can list your PUBG account for sale / purchase one. But all accounts are public, with no guarantee against recovery. There is a guarantee that the purchase will be completely safe.\n\n"
-            "9. @ua_store_chat – same functionality, but it's a chat. And it's not just for PUBG now; different people sell their goods or services there, with me or @vertuu_admin as guarantors.\n\n"
-            "10. @vertuu_boost – honestly, not very relevant, we don't have many orders. But there is a person who works well, boosts quickly, with high quality, without cheats, and cheaply. Much cheaper than some streamers, for example. And the guarantee from me is reliable.\n\n"
+            "3. @small_accounts – selling accounts up to $400 from my admins. All are safe and come with a guarantee against recovery. You can also sell your account in that price range to the admins, provided it's safe and profitable for resale.\n\n"
+            "4. @scammers_spawn – a scammer database where we post IDs of recovered accounts, scammer usernames, etc. There was a previous one, 10 times larger, which Telegram took down for distributing scammers' passports and phone numbers. Even though they are scammers, distributing such information is forbidden on Telegram. The base is not very active right now, but I think we'll revive it.\n\n"
+            "5. @ua_pubgm_store – my first channel, where you can list your PUBG account for sale / purchase one. But all accounts are public, with no guarantee against recovery. There is a guarantee that the purchase will be completely safe.\n\n"
+            "6. @ua_store_chat – same functionality, but it's a chat. And it's not just for PUBG now; different people sell their goods or services there, with me or @vertuu_admin as guarantors.\n\n"
+            "7. @vertuu_rent – THE CHEAPEST, really the cheapest rental of luxury, rare, stacked PUBG accounts. I only rent out my own, so the prices are kept favorable since there's no need to pay extra to account owners. For a ridiculous 100 UAH, you can rent an account worth 100,000 for a day🙂!\n\n"
+            "8. @exchangerin – the channel just exists, I don't drive traffic to it. It's a currency exchange channel; for this service, write to @currency_exchanging. It's safe and profitable, though sometimes not very fast. But you can exchange thousands of dollars without fear.\n\n"
+            "9. @n1_uc_shop – for everyone who wants to buy UC / popularity / supercars / X-suits / house votes, etc., profitably and safely. Really cheap. Fast and high-quality. And most importantly, it's safe + you support me financially while saving money yourself.\n\n"
+            "10. Not long ago, I created a new but very functional shop – @n1_tele_shop. There you can buy Telegram Stars, Telegram Premium, TON cryptocurrency (very relevant now) cheaply for UAH. You can also order a search for NFTs, sell your gifts, etc. In short, everything is very cool.\n\n"
             "11. @vertuuhacks – the project is for sale😁 If interested, write to me, the price is not high.\n\n"
             "12. @tournaments_pm – scrims, custom rooms, tournaments. Currently on pause, but we restart it from time to time, sometimes with new formats, like with streams and good prizes. Worth checking out, the organization is top-notch.\n\n"
-            "13. @scammers_spawn – a scammer database where we post IDs of recovered accounts, scammer usernames, etc. There was a previous one, 10 times larger, which Telegram took down for distributing scammers' passports and phone numbers. Even though they are scammers, distributing such information is forbidden on Telegram. The base is not very active right now, but I think we'll revive it.\n\n"
-            "14. @exchangerin – the channel just exists, I don't drive traffic to it. It's a currency exchange channel; for this service, write to @currency_exchanging. It's safe and profitable, though sometimes not very fast. But you can exchange thousands of dollars without fear.\n\n"
+            "13. @vertuu_tiktok – buying/selling TikTok accounts. You can list yours for sale / sell it to an admin or buy an account at a great price. Really great!\n\n"
+            "14. @vertuu_boost – honestly, not very relevant, we don't have many orders. But there is a person who works well, boosts quickly, with high quality, without cheats, and cheaply. Much cheaper than some streamers, for example. And the guarantee from me is reliable.\n\n"
             "15. @vertuu_account_help – another relic of the past, there's no admin there anymore. For all services, write to me. More precisely, the only relevant service there now is 3-6 device removal + I can also help you with account recovery."
         ),
         'contacts': (
             "<b>Staff Contacts</b>\n\n"
-            "1. First and foremost, me. My only contact is @vrt484(@vertuu) – guarantor for deals over 5000 UAH😁 Anyone else with a similar page is a fake.\n\n"
-            "2. @vertuu_admin – guarantor for deals up to 5000 UAH and exchanges. Also, contact him for listing an account for sale or buying from the @ua_pubgm_store channel.\n\n"
-            "3. @currency_exchanging – my currency exchanger. Helps with transfers / withdrawals, etc.\n\n"
-            "4. @uc_shop_admin – for buying UC by ID / popularity / tokens for cars or X-suits, house votes, etc.\n\n"
-            "5. @uc_login_admin – for buying UC via QR code (login). This is significantly cheaper than donating by ID and is just as fast and safe.\n\n"
+            "1. First and foremost, me. My only contact is @vrt484(@vertuu) – middleman for deals over 5000 UAH😁 Anyone else with a similar page is a fake.\n\n"
+            "2. @vertuu_admin – middleman for deals up to 5000 UAH and exchanges. Also, contact him for listing an account for sale or buying from the @ua_pubgm_store channel.\n\n"
+            "3. @sa_seller – for buying accounts with a guarantee, priced up to $400. You can also sell him your account at an urgent price, but only if it's safe and personal.\n\n"
+            "4. @smaller_sa – for buying accounts with a guarantee, priced up to $100. You can also sell him yours in the same price range, as long as it's safe and you can vouch for it.\n\n"
+            "5. @currency_exchanging – my currency exchanger. Helps with transfers / withdrawals, etc.\n\n"
             "6. @tele_shop_admin – contact for buying Stars, Telegram Premium, TON, NFT gifts, boosting, etc.\n\n"
-            "7. @sa_seller – for buying accounts with a guarantee, priced up to $400. You can also sell him your account at an urgent price, but only if it's safe and personal.\n\n"
-            "8. @smaller_sa – for buying accounts with a guarantee, priced up to $100. You can also sell him yours in the same price range, as long as it's safe and you can vouch for it.\n\n"
+            "7. @uc_shop_admin – for buying UC by ID / popularity / tokens for cars or X-suits, house votes, etc.\n\n"
+            "8. @uc_login_admin – for buying UC via QR code (login). This is significantly cheaper than donating by ID and is just as fast and safe.\n\n"
             "9. @clans_trade – buying/selling clans.\n\n"
             "10. @vertuu_tt_admin – contact for buying/selling TikTok accounts.\n\n"
             "11. @vertuu_boost_admin – admin who boosts ranks/achievements.\n\n"
@@ -583,8 +583,8 @@ TEXTS = {
     ),
         'buttons': {
             'about': "About me",
-            'projects': "My Channels-Projects",
-            'contacts': "Staff Contacts",
+            'projects': "My Channels-projects",
+            'contacts': "Staff contacts",
             'reviews': "Reviews",
             'ad': "Advertising",
             'back': "⬅️ Back to menu"
