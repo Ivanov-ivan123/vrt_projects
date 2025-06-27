@@ -330,7 +330,7 @@ from telegram.constants import ParseMode
 import sqlite3
 from telegram.error import BadRequest
 
-TOKEN = '7529240199:AAFu6u_9zXCynLb8g02FDsqQgLfMS3Zd3NM'  # <-- твій токен
+TOKEN = '6724259067:AAFBJmCxWyvfu8WSZtvtLOXWSV4wsgrrTXU'  # <-- твій токен
 CHANNEL_USERNAME = '@vertuu_crypto'  # добавь имя канала здесь
 
 # Логування
