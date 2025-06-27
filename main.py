@@ -328,8 +328,10 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 from telegram.constants import ParseMode
 import sqlite3
+from telegram.error import BadRequest
 
 TOKEN = '7529240199:AAFu6u_9zXCynLb8g02FDsqQgLfMS3Zd3NM'  # <-- твій токен
+CHANNEL_USERNAME = '@vertuu_crypto'  # добавь имя канала здесь
 
 # Логування
 logging.basicConfig(
@@ -338,7 +340,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Список адмінів (встав свій Telegram ID сюди)
-ADMIN_IDS = [747846636, 585870031]  # Заміни 123456789 на свій ID
+ADMIN_IDS = [747846636, 585870031]  # Заміни на свої ID
 
 # Підключаємо базу та створюємо таблицю, якщо нема
 conn = sqlite3.connect('users.db', check_same_thread=False)
@@ -614,6 +616,13 @@ def get_main_menu_keyboard(lang: str):
     ]
     return InlineKeyboardMarkup(keyboard)
 
+def get_subscription_keyboard():
+    keyboard = [
+        [InlineKeyboardButton("Перейти на канал", url=f"https://t.me/{CHANNEL_USERNAME.lstrip('@')}")],
+        [InlineKeyboardButton("Перевірити підписку", callback_data='check_subscription')],
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
 async def add_user_to_db(user_id: int):
     try:
         cursor.execute('INSERT OR IGNORE INTO users (user_id) VALUES (?)', (user_id,))
@@ -621,14 +630,55 @@ async def add_user_to_db(user_id: int):
     except Exception as e:
         logger.error(f"Помилка додавання користувача в БД: {e}")
 
+# Здесь функция исправлена:
+async def is_user_subscribed(update: Update, context: ContextTypes.DEFAULT_TYPE, user_id: int) -> bool:
+    try:
+        chat_member = await context.bot.get_chat_member(CHANNEL_USERNAME, user_id)
+        logger.info(f"User {user_id} status in channel: {chat_member.status}")
+        return chat_member.status in ['member', 'creator', 'administrator']
+    except BadRequest as e:
+        logger.warning(f"BadRequest for user {user_id} in channel check: {e}")
+        return False
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    user_id = update.message.from_user.id
-    await add_user_to_db(user_id)  # Додаємо користувача в базу при старті
+    user_id = update.message.from_user.id if update.message else None
+    logger.info(f"Received /start from user {user_id}")
+
+    if user_id is None:
+        logger.error("update.message is None — не можу отримати user_id")
+        return
+
+    subscribed = await is_user_subscribed(update, context, user_id)  # <-- передаем context
+    if not subscribed:
+        if update.message:
+            await update.message.reply_text(
+                "Для користування цим ботом, спершу підпишись на @vertuu_crypto🤝\n"
+                "—————————————————————\n"
+                "Для использования этого бота, сначала подпишись на @vertuu_crypto🤝\n"
+                "—————————————————————\n"
+                "To use this bot, first subscribe to @vertuu_crypto🤝",
+                reply_markup=get_subscription_keyboard()
+            )
+        else:
+            logger.warning("update.message is None, не можу відправити повідомлення про підписку")
+        return
+
+    await add_user_to_db(user_id)
 
     await update.message.reply_text(
         "Будь ласка, оберіть мову / Пожалуйста, выберите язык / Please select a language:",
         reply_markup=get_language_keyboard()
     )
+
+async def members(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    user_id = update.message.from_user.id if update.message else None
+    if user_id not in ADMIN_IDS:
+        await update.message.reply_text("У тебе немає доступу до цієї команди.")
+        return
+
+    cursor.execute('SELECT COUNT(*) FROM users')
+    count = cursor.fetchone()[0]
+    await update.message.reply_text(f"Кількість користувачів бота: {count}")
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
@@ -637,8 +687,19 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     user_id = query.from_user.id
     data = query.data
 
-    # Додаємо користувача в базу і тут (на випадок, якщо користувач не стартував з /start)
-    await add_user_to_db(user_id)
+    logger.info(f"Callback query from user {user_id}, data={data}")
+
+    if data == 'check_subscription':
+        subscribed = await is_user_subscribed(update, context, user_id)  # <-- передаем context
+        if subscribed:
+            await query.edit_message_text(
+                "Ви успішно підписані на канал! Тепер можете користуватись ботом.",
+                reply_markup=get_language_keyboard()
+            )
+            await add_user_to_db(user_id)
+        else:
+            await query.answer("Ви не підписані на канал. Будь ласка, підпишіться і натисніть «Перевірити підписку» ще раз.", show_alert=True)
+        return
 
     if data.startswith('lang_'):
         lang = data.split('_')[1]
@@ -672,22 +733,11 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             disable_web_page_preview=True
         )
 
-# Новий хендлер для /members
-async def members(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    user_id = update.message.from_user.id
-    if user_id not in ADMIN_IDS:
-        await update.message.reply_text("У тебе немає доступу до цієї команди.")
-        return
-
-    cursor.execute('SELECT COUNT(*) FROM users')
-    count = cursor.fetchone()[0]
-    await update.message.reply_text(f"Кількість користувачів бота: {count}")
-
 def main() -> None:
     application = Application.builder().token(TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("members", members))  # Додаємо команду /members
+    application.add_handler(CommandHandler("members", members))
     application.add_handler(CallbackQueryHandler(button_handler))
 
     print("Бот запущений...")
