@@ -324,25 +324,23 @@
 
 
 import logging
+import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 from telegram.constants import ParseMode
 import sqlite3
 from telegram.error import BadRequest
 
-TOKEN = '6724259067:AAFBJmCxWyvfu8WSZtvtLOXWSV4wsgrrTXU'  # <-- твій токен
-CHANNEL_USERNAME = '@vertuu_crypto'  # добавь имя канала здесь
+TOKEN = '6724259067:AAFBJmCxWyvfu8WSZtvtLOXWSV4wsgrrTXU'
+CHANNEL_USERNAME = '@vertuu_crypto'
 
-# Логування
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
-# Список адмінів (встав свій Telegram ID сюди)
-ADMIN_IDS = [747846636, 585870031]  # Заміни на свої ID
+ADMIN_IDS = [747846636, 585870031, 6748748757]
 
-# Підключаємо базу та створюємо таблицю, якщо нема
 conn = sqlite3.connect('users.db', check_same_thread=False)
 cursor = conn.cursor()
 cursor.execute('''
@@ -630,7 +628,6 @@ async def add_user_to_db(user_id: int):
     except Exception as e:
         logger.error(f"Помилка додавання користувача в БД: {e}")
 
-# Здесь функция исправлена:
 async def is_user_subscribed(update: Update, context: ContextTypes.DEFAULT_TYPE, user_id: int) -> bool:
     try:
         chat_member = await context.bot.get_chat_member(CHANNEL_USERNAME, user_id)
@@ -648,7 +645,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         logger.error("update.message is None — не можу отримати user_id")
         return
 
-    subscribed = await is_user_subscribed(update, context, user_id)  # <-- передаем context
+    subscribed = await is_user_subscribed(update, context, user_id)
     if not subscribed:
         if update.message:
             await update.message.reply_text(
@@ -680,6 +677,75 @@ async def members(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     count = cursor.fetchone()[0]
     await update.message.reply_text(f"Кількість користувачів бота: {count}")
 
+# 🔽 ДОБАВЛЕНА КОМАНДА /send
+async def send(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    user_id = update.message.from_user.id
+    if user_id not in ADMIN_IDS:
+        await update.message.reply_text("У тебе немає доступу до цієї команди.")
+        return
+
+    if not update.message.reply_to_message:
+        await update.message.reply_text("⚠️ Надішли цю команду у відповідь на повідомлення, яке потрібно розіслати.")
+        return
+
+    original = update.message.reply_to_message
+
+    cursor.execute('SELECT user_id FROM users')
+    users = cursor.fetchall()
+
+    success = 0
+    failed = 0
+
+    for (uid,) in users:
+        try:
+            reply_markup = original.reply_markup if original.reply_markup else None
+
+            if original.text:
+                await context.bot.send_message(
+                    chat_id=uid,
+                    text=original.text,
+                    parse_mode=ParseMode.HTML,
+                    reply_markup=reply_markup,
+                    disable_web_page_preview=True
+                )
+            elif original.photo:
+                await context.bot.send_photo(
+                    chat_id=uid,
+                    photo=original.photo[-1].file_id,
+                    caption=original.caption or "",
+                    parse_mode=ParseMode.HTML,
+                    reply_markup=reply_markup
+                )
+            elif original.video:
+                await context.bot.send_video(
+                    chat_id=uid,
+                    video=original.video.file_id,
+                    caption=original.caption or "",
+                    parse_mode=ParseMode.HTML,
+                    reply_markup=reply_markup
+                )
+            elif original.document:
+                await context.bot.send_document(
+                    chat_id=uid,
+                    document=original.document.file_id,
+                    caption=original.caption or "",
+                    parse_mode=ParseMode.HTML,
+                    reply_markup=reply_markup
+                )
+            else:
+                await context.bot.send_message(
+                    chat_id=uid,
+                    text="⚠️ Цей тип повідомлення не підтримується для розсилки."
+                )
+
+            success += 1
+            await asyncio.sleep(0.1)
+        except Exception as e:
+            logger.warning(f"Не вдалося надіслати повідомлення користувачу {uid}: {e}")
+            failed += 1
+
+    await update.message.reply_text(f"✅ Розсилка завершена!\nУспішно: {success}\nПомилки: {failed}")
+
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     query = update.callback_query
     await query.answer()
@@ -690,7 +756,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     logger.info(f"Callback query from user {user_id}, data={data}")
 
     if data == 'check_subscription':
-        subscribed = await is_user_subscribed(update, context, user_id)  # <-- передаем context
+        subscribed = await is_user_subscribed(update, context, user_id)
         if subscribed:
             await query.edit_message_text(
                 "Ви успішно підписані на канал! Тепер можете користуватись ботом.",
@@ -738,6 +804,7 @@ def main() -> None:
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("members", members))
+    application.add_handler(CommandHandler("send", send))  # 🔹 добавлен хендлер
     application.add_handler(CallbackQueryHandler(button_handler))
 
     print("Бот запущений...")
